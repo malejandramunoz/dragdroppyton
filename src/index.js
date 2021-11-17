@@ -276,6 +276,11 @@ class App extends Component {
     state = {
         [uuid()]: []
     };
+
+    insideList = {
+        [uuid()] :[]
+    }
+
     onDragEnd = result => {
         const { source, destination } = result;
 
@@ -681,6 +686,40 @@ class App extends Component {
                                                                       />
                                                                   </svg>
                                                               </Handle>
+                                                              {Object.keys(this.insideList).map((insideList, i) => (
+                                                                  <Droppable key={insideList} droppableId ={insideList}>
+                                                                      {(insideProvided, insideSnapshot) => (
+                                                                          <Container innerRef={insideProvided.innerRef} isDraggingOver={insideSnapshot.isDraggingOver}>
+                                                                              {this.insideList[insideList].length
+                                                                                  ? this.insideList[insideList].map(
+                                                                                      (insideItem, insideIndex) => (
+                                                                                          <Draggable key={insideItem.index} draggableId={insideItem.id} index={insideIndex}>
+                                                                                              {(insideP, insideS) => (
+                                                                                                  <Item innerRef={insideP.innerRef} {...insideP.draggableProps} isDragging={insideS.isDragging} style={insideP.draggableProps .style}>
+                                                                                                      <Handle
+                                                                                                          {...provided.dragHandleProps}>
+                                                                                                          <svg
+                                                                                                              width="24"
+                                                                                                              height="24"
+                                                                                                              viewBox="0 0 24 24">
+                                                                                                              <path
+                                                                                                                  fill="currentColor"
+                                                                                                                  d="M3,15H21V13H3V15M3,19H21V17H3V19M3,11H21V9H3V11M3,5V7H21V5H3Z"
+                                                                                                              />
+                                                                                                          </svg>
+                                                                                                      </Handle>
+                                                                                                      {insideItem.content}
+                                                                                                  </Item>
+                                                                                              )}
+                                                                                          </Draggable>
+                                                                                      )
+                                                                                  ) : !provided.placeholder && (
+                                                                                  <Notice>Drop</Notice>
+                                                                              )}
+                                                                          </Container>
+                                                                      )}
+                                                                  </Droppable>
+                                                              ))}
                                                                   {item.content}
                                                                   <button
                                                                       style={{
