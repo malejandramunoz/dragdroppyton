@@ -171,6 +171,16 @@ const LOGIC = [
         id: uuid(),
         content: '>=',
         color: "#B98B73"
+    },
+    {
+        id: uuid(),
+        content: 'if/else',
+        color: "#B98B73"
+    },
+    {
+        id: uuid(),
+        content: 'if/elseif/else',
+        color: "#B98B73"
     }
 
 ];
@@ -192,6 +202,75 @@ const LOOPS = [
         color: "#CB997E"
     }
 ];
+
+const TEXT = [
+    {
+        id: uuid(),
+        content: 'Input',
+        color: "#DDBEA9"
+    }
+];
+
+// Text, Math, Variables
+
+const MATH = [
+    {
+        id: uuid(),
+        content: '+',
+        color: "#FFE8D6"
+    },
+    {
+        id: uuid(),
+        content: '-',
+        color: "#FFE8D6"
+    },
+    {
+        id: uuid(),
+        content: '*',
+        color: "#FFE8D6"
+    },
+    {
+        id: uuid(),
+        content: '/',
+        color: "#FFE8D6"
+    },
+    {
+        id: uuid(),
+        content: 'Input',
+        color: "#FFE8D6"
+    }
+];
+
+const VARIABLES = [
+    {
+        id: uuid(),
+        content: 'global',
+        color: "#D4C7B0"
+    },
+    {
+        id: uuid(),
+        content: 'local',
+        color: "#D4C7B0"
+    },
+    {
+        id: uuid(),
+        content: 'get',
+        color: "#D4C7B0"
+    },
+    {
+        id: uuid(),
+        content: 'set',
+        color: "#D4C7B0"
+    }
+];
+
+const MISC = [
+    {
+        id: uuid(),
+        content: 'print',
+        color: "#B7B7A4"
+    }
+]
 
 class App extends Component {
     state = {
@@ -235,6 +314,46 @@ class App extends Component {
                     )
                 });
                 break;
+            case 'TEXT':
+                this.setState({
+                    [destination.droppableId]: copy(
+                        TEXT,
+                        this.state[destination.droppableId],
+                        source,
+                        destination
+                    )
+                });
+                break;
+            case 'MATH':
+                this.setState({
+                    [destination.droppableId]: copy(
+                        MATH,
+                        this.state[destination.droppableId],
+                        source,
+                        destination
+                    )
+                });
+                break;
+            case 'VARIABLES':
+                this.setState({
+                    [destination.droppableId]: copy(
+                        VARIABLES,
+                        this.state[destination.droppableId],
+                        source,
+                        destination
+                    )
+                });
+                break;
+            case 'MISC':
+                this.setState({
+                    [destination.droppableId]: copy(
+                        MISC,
+                        this.state[destination.droppableId],
+                        source,
+                        destination
+                    )
+                });
+                break;
             default:
                 this.setState(
                     move(
@@ -264,6 +383,10 @@ class App extends Component {
                     }}>
                         <Tab>Logic</Tab>
                         <Tab>Loops</Tab>
+                        <Tab>Text</Tab>
+                        <Tab>Math</Tab>
+                        <Tab>Variables</Tab>
+                        <Tab>Misc</Tab>
                     </TabList>
                     <TabPanel>
                         <Droppable droppableId="LOGIC" isDropDisabled={true}>
@@ -343,6 +466,162 @@ class App extends Component {
                             )}
                         </Droppable>
                     </TabPanel>
+                    <TabPanel>
+                        <Droppable droppableId="TEXT" isDropDisabled={true}>
+                            {(provided, snapshot) => (
+                                <Kiosk
+                                    innerRef={provided.innerRef}
+                                    isDraggingOver={snapshot.isDraggingOver}>
+                                    {TEXT.map((item, index) => (
+                                        <Draggable
+                                            key={item.id}
+                                            draggableId={item.id}
+                                            index={index}>
+                                            {(provided, snapshot) => (
+                                                <React.Fragment>
+                                                    <Item
+                                                        innerRef={provided.innerRef}
+                                                        {...provided.draggableProps}
+                                                        {...provided.dragHandleProps}
+                                                        isDragging={snapshot.isDragging}
+                                                        style={
+                                                            provided.draggableProps
+                                                                .style
+                                                        }
+                                                        style={{
+                                                            background: "#DDBEA9"
+                                                        }}
+                                                    >
+                                                        {item.content}
+                                                    </Item>
+                                                    {snapshot.isDragging && (
+                                                        <Clone>{item.content}</Clone>
+                                                    )}
+                                                </React.Fragment>
+                                            )}
+                                        </Draggable>
+                                    ))}
+                                </Kiosk>
+                            )}
+                        </Droppable>
+                    </TabPanel>
+                    <TabPanel>
+                        <Droppable droppableId="MATH" isDropDisabled={true}>
+                            {(provided, snapshot) => (
+                                <Kiosk
+                                    innerRef={provided.innerRef}
+                                    isDraggingOver={snapshot.isDraggingOver}>
+                                    {MATH.map((item, index) => (
+                                        <Draggable
+                                            key={item.id}
+                                            draggableId={item.id}
+                                            index={index}>
+                                            {(provided, snapshot) => (
+                                                <React.Fragment>
+                                                    <Item
+                                                        innerRef={provided.innerRef}
+                                                        {...provided.draggableProps}
+                                                        {...provided.dragHandleProps}
+                                                        isDragging={snapshot.isDragging}
+                                                        style={
+                                                            provided.draggableProps
+                                                                .style
+                                                        }
+                                                        style={{
+                                                            background: "#FFE8D6"
+                                                        }}
+                                                    >
+                                                        {item.content}
+                                                    </Item>
+                                                    {snapshot.isDragging && (
+                                                        <Clone>{item.content}</Clone>
+                                                    )}
+                                                </React.Fragment>
+                                            )}
+                                        </Draggable>
+                                    ))}
+                                </Kiosk>
+                            )}
+                        </Droppable>
+                    </TabPanel>
+                    <TabPanel>
+                        <Droppable droppableId="VARIABLES" isDropDisabled={true}>
+                            {(provided, snapshot) => (
+                                <Kiosk
+                                    innerRef={provided.innerRef}
+                                    isDraggingOver={snapshot.isDraggingOver}>
+                                    {VARIABLES.map((item, index) => (
+                                        <Draggable
+                                            key={item.id}
+                                            draggableId={item.id}
+                                            index={index}>
+                                            {(provided, snapshot) => (
+                                                <React.Fragment>
+                                                    <Item
+                                                        innerRef={provided.innerRef}
+                                                        {...provided.draggableProps}
+                                                        {...provided.dragHandleProps}
+                                                        isDragging={snapshot.isDragging}
+                                                        style={
+                                                            provided.draggableProps
+                                                                .style
+                                                        }
+                                                        style={{
+                                                            background: "#D4C7B0"
+                                                        }}
+                                                    >
+                                                        {item.content}
+                                                    </Item>
+                                                    {snapshot.isDragging && (
+                                                        <Clone>{item.content}</Clone>
+                                                    )}
+                                                </React.Fragment>
+                                            )}
+                                        </Draggable>
+                                    ))}
+                                </Kiosk>
+                            )}
+                        </Droppable>
+                    </TabPanel>
+                    <TabPanel>
+                            <Droppable droppableId="MISC" isDropDisabled={true}>
+                            {(provided, snapshot) => (
+                                <Kiosk
+                                    innerRef={provided.innerRef}
+                                    isDraggingOver={snapshot.isDraggingOver}>
+                                    {MISC.map((item, index) => (
+                                        <Draggable
+                                            key={item.id}
+                                            draggableId={item.id}
+                                            index={index}>
+                                            {(provided, snapshot) => (
+                                                <React.Fragment>
+                                                    <Item
+                                                        innerRef={provided.innerRef}
+                                                        {...provided.draggableProps}
+                                                        {...provided.dragHandleProps}
+                                                        isDragging={snapshot.isDragging}
+                                                        style={
+                                                            provided.draggableProps
+                                                                .style
+                                                        }
+                                                        style={{
+                                                            background: "#B7B7A4"
+                                                        }}
+                                                    >
+                                                        {item.content}
+                                                    </Item>
+                                                    {snapshot.isDragging && (
+                                                        <Clone>{item.content}</Clone>
+                                                    )}
+                                                </React.Fragment>
+                                            )}
+                                        </Draggable>
+                                    ))}
+                                </Kiosk>
+                            )}
+                        </Droppable>
+                    </TabPanel>
                 </Tabs>
 
                 <Content>
@@ -368,7 +647,7 @@ class App extends Component {
                                                       key={item.id}
                                                       draggableId={item.id}
                                                       index={index}>
-                                                      {(provided, snapshot, color) => (
+                                                      {(provided, snapshot) => (
                                                           (item.color === "#B98B73" &&
                                                           <Item
                                                               innerRef={
@@ -463,7 +742,197 @@ class App extends Component {
                                                                       Delete
                                                                   </button>
                                                               </Item>
-                                                          ))}
+                                                          ) || ( item.color === "#DDBEA9" &&
+                                                              <Item
+                                                                  innerRef={
+                                                                      provided.innerRef
+                                                                  }
+                                                                  {...provided.draggableProps}
+                                                                  isDragging={
+                                                                      snapshot.isDragging
+                                                                  }
+                                                                  style={
+                                                                      provided
+                                                                          .draggableProps
+                                                                          .style
+                                                                  }
+                                                                  style={{
+                                                                      display: "flex",
+                                                                      justifyContent: "space-between",
+                                                                      background: "#DDBEA9"
+                                                                  }}
+                                                              >
+
+                                                                  <Handle
+                                                                      {...provided.dragHandleProps}>
+                                                                      <svg
+                                                                          width="24"
+                                                                          height="24"
+                                                                          viewBox="0 0 24 24">
+                                                                          <path
+                                                                              fill="currentColor"
+                                                                              d="M3,15H21V13H3V15M3,19H21V17H3V19M3,11H21V9H3V11M3,5V7H21V5H3Z"
+                                                                          />
+                                                                      </svg>
+                                                                  </Handle>
+                                                                  {item.content}
+                                                                  <button
+                                                                      style={{
+                                                                          align: "right"
+                                                                      }}
+                                                                      onClick={() => {
+                                                                          const newState = this.state;
+                                                                          newState[list].splice(index, 1);
+                                                                          this.setState(newState);
+                                                                      }}
+                                                                  >
+                                                                      Delete
+                                                                  </button>
+                                                              </Item>
+                                                          ) || ( item.color === "#FFE8D6" &&
+                                                              <Item
+                                                                  innerRef={
+                                                                      provided.innerRef
+                                                                  }
+                                                                  {...provided.draggableProps}
+                                                                  isDragging={
+                                                                      snapshot.isDragging
+                                                                  }
+                                                                  style={
+                                                                      provided
+                                                                          .draggableProps
+                                                                          .style
+                                                                  }
+                                                                  style={{
+                                                                      display: "flex",
+                                                                      justifyContent: "space-between",
+                                                                      background: "#FFE8D6"
+                                                                  }}
+                                                              >
+
+                                                                  <Handle
+                                                                      {...provided.dragHandleProps}>
+                                                                      <svg
+                                                                          width="24"
+                                                                          height="24"
+                                                                          viewBox="0 0 24 24">
+                                                                          <path
+                                                                              fill="currentColor"
+                                                                              d="M3,15H21V13H3V15M3,19H21V17H3V19M3,11H21V9H3V11M3,5V7H21V5H3Z"
+                                                                          />
+                                                                      </svg>
+                                                                  </Handle>
+                                                                  {item.content}
+                                                                  <button
+                                                                      style={{
+                                                                          align: "right"
+                                                                      }}
+                                                                      onClick={() => {
+                                                                          const newState = this.state;
+                                                                          newState[list].splice(index, 1);
+                                                                          this.setState(newState);
+                                                                      }}
+                                                                  >
+                                                                      Delete
+                                                                  </button>
+                                                              </Item>
+                                                          ) || ( item.color === "#D4C7B0" &&
+                                                              <Item
+                                                                  innerRef={
+                                                                      provided.innerRef
+                                                                  }
+                                                                  {...provided.draggableProps}
+                                                                  isDragging={
+                                                                      snapshot.isDragging
+                                                                  }
+                                                                  style={
+                                                                      provided
+                                                                          .draggableProps
+                                                                          .style
+                                                                  }
+                                                                  style={{
+                                                                      display: "flex",
+                                                                      justifyContent: "space-between",
+                                                                      background: "#D4C7B0"
+                                                                  }}
+                                                              >
+
+                                                                  <Handle
+                                                                      {...provided.dragHandleProps}>
+                                                                      <svg
+                                                                          width="24"
+                                                                          height="24"
+                                                                          viewBox="0 0 24 24">
+                                                                          <path
+                                                                              fill="currentColor"
+                                                                              d="M3,15H21V13H3V15M3,19H21V17H3V19M3,11H21V9H3V11M3,5V7H21V5H3Z"
+                                                                          />
+                                                                      </svg>
+                                                                  </Handle>
+                                                                  {item.content}
+                                                                  <button
+                                                                      style={{
+                                                                          align: "right"
+                                                                      }}
+                                                                      onClick={() => {
+                                                                          const newState = this.state;
+                                                                          newState[list].splice(index, 1);
+                                                                          this.setState(newState);
+                                                                      }}
+                                                                  >
+                                                                      Delete
+                                                                  </button>
+                                                              </Item>
+                                                          ) || ( item.color === "#B7B7A4" &&
+                                                              <Item
+                                                                  innerRef={
+                                                                      provided.innerRef
+                                                                  }
+                                                                  {...provided.draggableProps}
+                                                                  isDragging={
+                                                                      snapshot.isDragging
+                                                                  }
+                                                                  style={
+                                                                      provided
+                                                                          .draggableProps
+                                                                          .style
+                                                                  }
+                                                                  style={{
+                                                                      display: "flex",
+                                                                      justifyContent: "space-between",
+                                                                      background: "#B7B7A4"
+                                                                  }}
+                                                              >
+
+                                                                  <Handle
+                                                                      {...provided.dragHandleProps}>
+                                                                      <svg
+                                                                          width="24"
+                                                                          height="24"
+                                                                          viewBox="0 0 24 24">
+                                                                          <path
+                                                                              fill="currentColor"
+                                                                              d="M3,15H21V13H3V15M3,19H21V17H3V19M3,11H21V9H3V11M3,5V7H21V5H3Z"
+                                                                          />
+                                                                      </svg>
+                                                                  </Handle>
+                                                                  {item.content}
+                                                                  <button
+                                                                      style={{
+                                                                          align: "right"
+                                                                      }}
+                                                                      onClick={() => {
+                                                                          const newState = this.state;
+                                                                          newState[list].splice(index, 1);
+                                                                          this.setState(newState);
+                                                                      }}
+                                                                  >
+                                                                      Delete
+                                                                  </button>
+                                                              </Item>
+                                                          )
+
+                                                      )}
                                                   </Draggable>
                                               )
                                           )
