@@ -134,35 +134,43 @@ const ButtonText = styled.div`
 const LOGIC = [
     {
         id: uuid(),
-        content: 'And'
+        content: 'And',
+        color: "#B98B73"
     },
     {
         id: uuid(),
-        content: 'Or'
+        content: 'Or',
+        color: "#B98B73"
     },
     {
         id: uuid(),
-        content: 'Not'
+        content: 'Not',
+        color: "#B98B73"
     },
     {
         id: uuid(),
-        content: '<'
+        content: '<',
+        color: "#B98B73"
     },
     {
         id: uuid(),
-        content: '>'
+        content: '>',
+        color: "#B98B73"
     },
     {
         id: uuid(),
-        content: '='
+        content: '=',
+        color: "#B98B73"
     },
     {
         id: uuid(),
-        content: '<='
+        content: '<=',
+        color: "#B98B73"
     },
     {
         id: uuid(),
-        content: '>='
+        content: '>=',
+        color: "#B98B73"
     }
 
 ];
@@ -170,15 +178,18 @@ const LOGIC = [
 const LOOPS = [
     {
         id: uuid(),
-        content: 'For'
+        content: 'For',
+        color: "#CB997E"
     },
     {
         id: uuid(),
-        content: 'For Each'
+        content: 'For Each',
+        color: "#CB997E"
     },
     {
         id: uuid(),
-        content: 'While'
+        content: 'While',
+        color: "#CB997E"
     }
 ];
 
@@ -357,8 +368,8 @@ class App extends Component {
                                                       key={item.id}
                                                       draggableId={item.id}
                                                       index={index}>
-                                                      {(provided, snapshot) => (
-                                                          (i === 0 &&
+                                                      {(provided, snapshot, color) => (
+                                                          (item.color === "#B98B73" &&
                                                           <Item
                                                               innerRef={
                                                                   provided.innerRef
@@ -374,7 +385,8 @@ class App extends Component {
                                                               }
                                                               style={{
                                                                   display: "flex",
-                                                                  justifyContent: "space-between"
+                                                                  justifyContent: "space-between",
+                                                                  background: '#B98B73'
                                                               }}
                                                           >
 
@@ -404,6 +416,53 @@ class App extends Component {
                                                                       Delete
                                                                   </button>
                                                           </Item>
+                                                          ) || ( item.color === "#CB997E" &&
+                                                              <Item
+                                                                  innerRef={
+                                                                      provided.innerRef
+                                                                  }
+                                                                  {...provided.draggableProps}
+                                                                  isDragging={
+                                                                      snapshot.isDragging
+                                                                  }
+                                                                  style={
+                                                                      provided
+                                                                          .draggableProps
+                                                                          .style
+                                                                  }
+                                                                  style={{
+                                                                      display: "flex",
+                                                                      justifyContent: "space-between",
+                                                                      background: "#CB997E"
+                                                                  }}
+                                                              >
+
+                                                                  <Handle
+                                                                      {...provided.dragHandleProps}>
+                                                                      <svg
+                                                                          width="24"
+                                                                          height="24"
+                                                                          viewBox="0 0 24 24">
+                                                                          <path
+                                                                              fill="currentColor"
+                                                                              d="M3,15H21V13H3V15M3,19H21V17H3V19M3,11H21V9H3V11M3,5V7H21V5H3Z"
+                                                                          />
+                                                                      </svg>
+                                                                  </Handle>
+                                                                  {item.content}
+                                                                  <button
+                                                                      style={{
+                                                                          align: "right"
+                                                                      }}
+                                                                      onClick={() => {
+                                                                          const newState = this.state;
+                                                                          newState[list].splice(index, 1);
+                                                                          this.setState(newState);
+                                                                      }}
+                                                                  >
+                                                                      Delete
+                                                                  </button>
+                                                              </Item>
                                                           ))}
                                                   </Draggable>
                                               )
