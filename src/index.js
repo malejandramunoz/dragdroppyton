@@ -5,6 +5,17 @@ import styled from 'styled-components';
 import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd';
 import { Tab, Tabs, TabList, TabPanel} from "react-tabs";
 import 'react-tabs/style/react-tabs.css';
+import FileCreator from './filecreator'
+import { Provider as AlertProvider } from 'react-alert'
+import AlertTemplate from 'react-alert-template-basic'
+
+const options = {
+    position: 'bottom center',
+    timeout: 5000,
+    offset: '30px',
+    transition: 'scale',
+    background: "white"
+}
 
 // a little function to help us with reordering the result
 const reorder = (list, startIndex, endIndex) => {
@@ -174,12 +185,17 @@ const LOGIC = [
     },
     {
         id: uuid(),
-        content: 'if/else',
+        content: 'if',
         color: "#B98B73"
     },
     {
         id: uuid(),
-        content: 'if/elseif/else',
+        content: 'else',
+        color: "#B98B73"
+    },
+    {
+        id: uuid(),
+        content: 'elseif',
         color: "#B98B73"
     }
 
@@ -279,7 +295,7 @@ class App extends Component {
 
     insideList = {
         [uuid()] :[]
-    }
+    };
 
     onDragEnd = result => {
         const { source, destination } = result;
@@ -298,6 +314,7 @@ class App extends Component {
                         destination.index
                     )
                 });
+
                 break;
             case 'LOGIC':
                 this.setState({
@@ -375,9 +392,6 @@ class App extends Component {
     addList = e => {
         this.setState({ [uuid()]: [] });
     };
-
-    // Normally you would want to split things out into separate components.
-    // But in this example everything is just done in one place for simplicity
     render() {
         return (
             <DragDropContext onDragEnd={this.onDragEnd}>
@@ -555,7 +569,7 @@ class App extends Component {
                                 <Kiosk
                                     innerRef={provided.innerRef}
                                     isDraggingOver={snapshot.isDraggingOver}>
-                                    {VARIABLES.map((item, index) => (
+                                    {VARIABLES.map((item , index) => (
                                         <Draggable
                                             key={item.id}
                                             draggableId={item.id}
@@ -640,11 +654,19 @@ class App extends Component {
                         <ButtonText>Add Code Snippet</ButtonText>
                     </Button>
                     {Object.keys(this.state).map((list, i) => (
+                        <div style={{
+                            display: "flex",
+                            justifyContent: "space-evenly"
+                        }}>
+                        <FileCreator type={i} items={this.state[list]}/>
                         <Droppable key={list} droppableId={list}>
                             {(provided, snapshot) => (
                                 <Container
                                     innerRef={provided.innerRef}
-                                    isDraggingOver={snapshot.isDraggingOver}>
+                                    isDraggingOver={snapshot.isDraggingOver}
+                                style={{
+                                        flexGrow: "2"
+                                    }}>
                                     {this.state[list].length
                                         ? this.state[list].map(
                                               (item, index) => (
@@ -686,40 +708,6 @@ class App extends Component {
                                                                       />
                                                                   </svg>
                                                               </Handle>
-                                                              {Object.keys(this.insideList).map((insideList, i) => (
-                                                                  <Droppable key={insideList} droppableId ={insideList}>
-                                                                      {(insideProvided, insideSnapshot) => (
-                                                                          <Container innerRef={insideProvided.innerRef} isDraggingOver={insideSnapshot.isDraggingOver}>
-                                                                              {this.insideList[insideList].length
-                                                                                  ? this.insideList[insideList].map(
-                                                                                      (insideItem, insideIndex) => (
-                                                                                          <Draggable key={insideItem.index} draggableId={insideItem.id} index={insideIndex}>
-                                                                                              {(insideP, insideS) => (
-                                                                                                  <Item innerRef={insideP.innerRef} {...insideP.draggableProps} isDragging={insideS.isDragging} style={insideP.draggableProps .style}>
-                                                                                                      <Handle
-                                                                                                          {...provided.dragHandleProps}>
-                                                                                                          <svg
-                                                                                                              width="24"
-                                                                                                              height="24"
-                                                                                                              viewBox="0 0 24 24">
-                                                                                                              <path
-                                                                                                                  fill="currentColor"
-                                                                                                                  d="M3,15H21V13H3V15M3,19H21V17H3V19M3,11H21V9H3V11M3,5V7H21V5H3Z"
-                                                                                                              />
-                                                                                                          </svg>
-                                                                                                      </Handle>
-                                                                                                      {insideItem.content}
-                                                                                                  </Item>
-                                                                                              )}
-                                                                                          </Draggable>
-                                                                                      )
-                                                                                  ) : !provided.placeholder && (
-                                                                                  <Notice>Drop</Notice>
-                                                                              )}
-                                                                          </Container>
-                                                                      )}
-                                                                  </Droppable>
-                                                              ))}
                                                                   {item.content}
                                                                   <button
                                                                       style={{
@@ -982,12 +970,14 @@ class App extends Component {
                                 </Container>
                             )}
                         </Droppable>
+                        </div>
                     ))}
                 </Content>
+
             </DragDropContext>
         );
     }
 }
 
 // Put the things into the DOM!
-ReactDOM.render(<App />, document.getElementById('root'));
+ReactDOM.render(<AlertProvider template={AlertTemplate} {...options}><App /></AlertProvider>, document.getElementById('root'));
