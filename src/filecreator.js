@@ -30,8 +30,11 @@ class FileCreator extends Component{
         if(this.props.items.length === 0){
             this.props.alert.show('Code is empty! Cannot compile')
         } else {
-            let intermediateCode = JSON.stringify(this.props.items)
-            
+            let intermediateCode = "";
+            {this.props.items.map((item, index) =>(
+                intermediateCode += " " + item.content
+            ))}
+            //console.log(intermediateCode)
             let blob = new Blob([intermediateCode], {type: "text/plain;charset=utf-8"});
             FileSaver.saveAs(blob, "code.txt");
         }
@@ -39,7 +42,7 @@ class FileCreator extends Component{
 
     render() {
 
-        console.log(this.props.items)
+        //console.log(this.props.items)
 
         return(
             <div>
