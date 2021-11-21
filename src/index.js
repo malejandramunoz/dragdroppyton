@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { Component, useState, useEffect } from 'react';
 import ReactDOM from 'react-dom';
 import uuid from 'uuid/v4';
 import styled from 'styled-components';

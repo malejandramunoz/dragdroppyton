@@ -37,6 +37,7 @@ class FileCreator extends Component{
             //console.log(intermediateCode)
             let blob = new Blob([intermediateCode], {type: "text/plain;charset=utf-8"});
             FileSaver.saveAs(blob, "code.txt");
+            this.props.alert.show('Code sended')//for testing purposes 
         }
     }
 
